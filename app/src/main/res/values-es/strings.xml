@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Emmys</string>
+    <string name="app_name">Emsys</string>
     <string name="sign_in">Registrarse</string>
     <string name="enter_email">Ingrese correo electrónico</string>
     <string name="enter_password">Introducir la contraseña</string>
