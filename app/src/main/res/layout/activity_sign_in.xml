@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primer_color"
+    tools:context=".views.SignInActivity">
+
+    <TextView
+        android:id="@+id/signin_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/sign_in"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="20dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/emsys_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signin_text" />
+
+    <ImageView
+        android:id="@+id/imageview_border"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="20dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/image_border"
+        android:contentDescription="@string/todo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signin_text" />
+
+    <LinearLayout
+        android:id="@+id/flagsLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageview_border">
+
+        <ImageButton
+            android:id="@+id/flagAmerica"
+            android:layout_width="32dp"
+            android:layout_height="24dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/flag_a"
+            android:contentDescription="@string/todo" />
+
+        <ImageButton
+            android:id="@+id/flagSpain"
+            android:layout_width="32dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="10dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/flag"
+            android:contentDescription="@string/todo" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inputFieldsLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/input_fileds_bg"
+        android:orientation="vertical"
+        android:paddingStart="12dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flagsLL">
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_baseline_person_outline_24"
+            android:drawablePadding="6dp"
+            android:hint="@string/enter_email"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/passwordHidden"
+                android:layout_width="@dimen/_220sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_baseline_lock_open_24"
+                android:drawablePadding="6dp"
+                android:hint="@string/enter_password"
+                android:maxLength="10"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:textColor="@color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="18sp" />
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/passwordShow"
+                android:layout_width="@dimen/_220sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_baseline_lock_open_24"
+                android:drawablePadding="6dp"
+                android:hint="@string/enter_password"
+                android:maxLength="10"
+                android:imeOptions="actionDone"
+                android:inputType="textVisiblePassword"
+                android:textColor="@color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/passwordHideShow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:onClick="passwordToggleClick"
+                android:background="@drawable/ic_baseline_visibility_off_24" />
+
+        </LinearLayout>
+
+        <!--
+            android:drawableEnd="@drawable/ic_baseline_visibility_off_24"
+        -->
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/signinButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="35dp"
+        android:background="@drawable/input_fileds_bg"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:onClick="signInFirebase"
+        android:text="@string/sign_in"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputFieldsLL" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Emsys</string>
+    <string name="sign_in">Registrarse</string>
+    <string name="enter_email">Ingrese correo electrónico</string>
+    <string name="enter_password">Introducir la contraseña</string>
+    <string name="todo">HACER</string>
+    <string name="welcome">Bienvenida aquí</string>
+    <string name="please_wait">Espere por favor...</string>
+
+    <string name="empty_password_alert">Por favor, ingrese contraseña</string>
+    <string name="empty_email_alert">Por favor ingrese el correo electrónico</string>
+    <string name="invalid_email_alert">Por favor introduzca un correo electrónico válido</string>
+</resources>
