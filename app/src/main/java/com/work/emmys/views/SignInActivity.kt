@@ -33,14 +33,12 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var passwordToggle: ImageButton
     private lateinit var americaFlagButton: ImageButton
     private lateinit var spainFlagButton: ImageButton
-    private lateinit var viewModel: SignInModel
     private var passwordShowHide = true
     private var passwordValue = ""
 
     var currentLanguage = "en"
     var currentLang: kotlin.String? = null
     var myLocale: Locale? = null
-
 
     @SuppressLint("ClickableViewAccessibility", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -175,7 +173,7 @@ class SignInActivity : AppCompatActivity() {
         sharedPreference.setStr(sharedPreference.USER_PASSWORD, passwordValue.trim())
         sharedPreference.setBool(sharedPreference.USER_LOGGED_IN, true)
         Log.e("save--->", "ghj")
-        val i = Intent(this@SignInActivity, HomeActivity::class.java)
+        val i = Intent(this@SignInActivity, InvoiceListActivity::class.java)
         startActivity(i)
 
         // close this activity
@@ -213,8 +211,8 @@ class SignInActivity : AppCompatActivity() {
         currentLanguage = localeName
         myLocale = Locale(localeName)
         val res: Resources = resources
-        val dm: DisplayMetrics = res.getDisplayMetrics()
-        val conf: Configuration = res.getConfiguration()
+        val dm: DisplayMetrics = res.displayMetrics
+        val conf: Configuration = res.configuration
         conf.locale = myLocale
         res.updateConfiguration(conf, dm)
         val refresh = Intent(this, SignInActivity::class.java)

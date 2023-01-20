@@ -28,7 +28,6 @@ class SplashActivity:AppCompatActivity() {
                 } else {
                     i = Intent(this@SplashActivity, SignInActivity::class.java)
                 }
-
                 startActivity(i)
 
                 // close this activity

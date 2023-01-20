@@ -10,5 +10,7 @@
 
     <color name="primer_color">#237EFF</color>
     <color name="second_color">#2F80ED</color>
+    <color name="color_green">#8BC34A</color>
+    <color name="color_light_gray">#F3A5A6A4</color>
 
 </resources>
