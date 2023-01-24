@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "827438444662",
-    "project_id": "emsys-878db",
-    "storage_bucket": "emsys-878db.appspot.com"
+    "project_number": "538803749636",
+    "project_id": "emsys-e5f80",
+    "storage_bucket": "emsys-e5f80.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:827438444662:android:88b8cd45fa544113deef57",
+        "mobilesdk_app_id": "1:538803749636:android:c4fd0fda2fb69192db8651",
         "android_client_info": {
           "package_name": "com.work.emmys"
         }
       },
       "oauth_client": [
         {
-          "client_id": "827438444662-2a32q2mbheg1ms4h0muum125rhdcuadk.apps.googleusercontent.com",
+          "client_id": "538803749636-2k87u6a23sp06drsbqf2af3j8lc5mb5m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC99Eq742tFTO0RdHHODxuA5E80s1GGs9k"
+          "current_key": "AIzaSyBfahi-0mYdhygUUsHfHWp8_0gWe4ECYP4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "827438444662-2a32q2mbheg1ms4h0muum125rhdcuadk.apps.googleusercontent.com",
+              "client_id": "538803749636-2k87u6a23sp06drsbqf2af3j8lc5mb5m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

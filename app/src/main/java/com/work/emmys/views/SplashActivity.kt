@@ -6,13 +6,14 @@ import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.work.emmys.R
-import com.work.emmys.common.SharedPreference
+import com.work.emmys.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class SplashActivity:AppCompatActivity() {
     private var isLoggedIn = false;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -22,11 +23,10 @@ class SplashActivity:AppCompatActivity() {
             Runnable
             // Using handler with postDelayed called runnable run method
             {
-                lateinit var i : Intent
-                if(isLoggedIn) {
-                     i = Intent(this@SplashActivity, HomeActivity::class.java)
+                val i : Intent = if(isLoggedIn) {
+                    Intent(this@SplashActivity, InvoiceListActivity::class.java)
                 } else {
-                    i = Intent(this@SplashActivity, SignInActivity::class.java)
+                    Intent(this@SplashActivity, SignInActivity::class.java)
                 }
                 startActivity(i)
 

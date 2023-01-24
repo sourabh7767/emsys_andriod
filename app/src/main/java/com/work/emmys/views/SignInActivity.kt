@@ -19,10 +19,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.work.emmys.R
-import com.work.emmys.common.SharedPreference
+import com.work.emmys.data.remote.Resource
+import com.work.emmys.models.LoginData
+import com.work.emmys.utils.SharedPreference
 import com.work.emmys.models.SignInModel
+import com.work.emmys.utils.Constants
+import com.work.emmys.view_models.SignInViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
+import kotlin.collections.HashMap
 
 @AndroidEntryPoint
 class SignInActivity : AppCompatActivity() {
@@ -33,8 +39,15 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var passwordToggle: ImageButton
     private lateinit var americaFlagButton: ImageButton
     private lateinit var spainFlagButton: ImageButton
+
+    @Inject
+    lateinit var viewModel: SignInViewModel
     private var passwordShowHide = true
     private var passwordValue = ""
+//    private val sharedPreference = SharedPreference(applicationContext)
+
+    @Inject
+    lateinit var sharedPreference: SharedPreference
 
     var currentLanguage = "en"
     var currentLang: kotlin.String? = null
@@ -52,6 +65,7 @@ class SignInActivity : AppCompatActivity() {
         americaFlagButton = findViewById(R.id.flagAmerica)
         spainFlagButton = findViewById(R.id.flagSpain)
 
+        setObserver()
         selectLanguages()
         passwordTextChangeListener()
 
@@ -103,8 +117,39 @@ class SignInActivity : AppCompatActivity() {
         })
     }
 
+    private fun setObserver() {
+        viewModel.loginResponse.observe(this) {
+            when (it) {
+                is Resource.Success -> {
+//                    paginationProgressBar.visibility = View.INVISIBLE
+//                    isLoading = false
+                    it.data?.let { newsResponse ->
+                        val token = newsResponse.response[0].token.access ?: ""
+                        sharedPreference.setStr(Constants.AUTH_TOKEN, token)
+                        val i = Intent(this@SignInActivity, InvoiceListActivity::class.java)
+                        startActivity(i)
+
+                        // close this activity
+                        finish()
+                    }
+                }
+                is Resource.Error -> {
+//                    paginationProgressBar.visibility = View.INVISIBLE
+//                    isLoading = true
+                    it.message?.let { message ->
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is Resource.Loading -> {
+//                    paginationProgressBar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
     fun signInFirebase(view: View) {
-      val signInModel = SignInModel(emailET.text.toString().trim(), passwordValue.trim())
+        val signInModel = SignInModel(emailET.text.toString().trim(), passwordValue.trim())
+
         if (emailET.text.toString().trim().isEmpty()) {
             Toast.makeText(
                 baseContext, resources.getString(R.string.empty_email_alert),
@@ -121,7 +166,7 @@ class SignInActivity : AppCompatActivity() {
             return
         }
 
-        if (signInModel.isPasswordLengthGreaterThan5()) {
+        if (!signInModel.isPasswordValid()) {
             Toast.makeText(
                 baseContext, resources.getString(R.string.empty_password_alert),
                 Toast.LENGTH_LONG
@@ -134,15 +179,16 @@ class SignInActivity : AppCompatActivity() {
             resources.getString(R.string.please_wait), true
         )
 
-
         auth.createUserWithEmailAndPassword(
             signInModel.getStrEmailAddress()!!,
-            signInModel.getStrPassword()!!
-        )
+            signInModel.getStrPassword()!!)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.e("PK===>", "createUserWithEmail:success")
+                    Log.e("PK===>", "${task.result}")
+                    Log.d("PK===>", "${task.result.user?.uid}")
+                    Log.e("PK===>", "${task.result.credential}")
 //                    val user = auth.currentUser
                     progressDialog.dismiss()
                     saveUserData()
@@ -168,16 +214,16 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun saveUserData() {
-        val sharedPreference = SharedPreference(applicationContext)
         sharedPreference.setStr(sharedPreference.USER_EMAIL, emailET.text.toString().trim())
         sharedPreference.setStr(sharedPreference.USER_PASSWORD, passwordValue.trim())
         sharedPreference.setBool(sharedPreference.USER_LOGGED_IN, true)
-        Log.e("save--->", "ghj")
-        val i = Intent(this@SignInActivity, InvoiceListActivity::class.java)
-        startActivity(i)
 
-        // close this activity
-        finish()
+        runOnUiThread {
+            authWithServer()
+        }
+
+        Log.e("save--->", "ghj")
+
     }
 
     private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
@@ -203,7 +249,15 @@ class SignInActivity : AppCompatActivity() {
             passwordHiddenET.isFocusable = true
             passwordHiddenET.requestFocus()
         }
+    }
 
+    private fun authWithServer() {
+        val headers = HashMap<String, String>()
+        headers["App-Id"] = "91a859ed-9d1d-4202-9bcb-cdcf2ffddb43"
+        headers["Api-Key"] = "5e4d8606d8c1f65f2ce12459"
+        headers["Content-Type"] = "application/json"
+
+        viewModel.apiLogin(headers, LoginData("prueba", "MOBILE"))
     }
 
     private fun setLocale(localeName: String) {
@@ -218,7 +272,8 @@ class SignInActivity : AppCompatActivity() {
         val refresh = Intent(this, SignInActivity::class.java)
         refresh.putExtra(currentLang, localeName)
         startActivity(refresh)
-//        } else {
+
+        //        } else {
 //            Toast.makeText(this@SignInActivity, "Language already selected!", Toast.LENGTH_SHORT)
 //                .show()
 //        }

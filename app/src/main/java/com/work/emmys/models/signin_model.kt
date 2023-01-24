@@ -23,7 +23,11 @@ class SignInModel {
     }
 
 
-    fun isPasswordLengthGreaterThan5(): Boolean {
+    /*fun isPasswordLengthGreaterThan5(): Boolean {
         return getStrPassword()!!.length > 5
+    }*/
+
+    fun isPasswordValid():Boolean{
+        return getStrPassword()?.isNotEmpty() == true
     }
 }

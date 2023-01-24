@@ -1,8 +1,10 @@
-package com.work.emmys.common
+package com.work.emmys.utils
 
 import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class SharedPreference(private var context: Context?) {
+class SharedPreference @Inject constructor(@ApplicationContext private var context: Context?) {
     val USER_EMAIL = "user_email"
     val USER_PASSWORD = "user_password"
     val USER_LOGGED_IN = "user_logged_in"

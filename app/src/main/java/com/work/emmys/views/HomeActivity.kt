@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.work.emmys.R
-import com.work.emmys.common.SharedPreference
+import com.work.emmys.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
