@@ -1,5 +1,6 @@
 package com.work.emmys.views
 
+import android.R.attr.password
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Intent
@@ -15,20 +16,25 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.work.emmys.R
 import com.work.emmys.data.remote.Resource
 import com.work.emmys.models.LoginData
-import com.work.emmys.utils.SharedPreference
 import com.work.emmys.models.SignInModel
 import com.work.emmys.utils.Constants
+import com.work.emmys.utils.SharedPreference
+import com.work.emmys.utils.Utils
 import com.work.emmys.view_models.SignInViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashMap
+
 
 @AndroidEntryPoint
 class SignInActivity : AppCompatActivity() {
@@ -44,18 +50,22 @@ class SignInActivity : AppCompatActivity() {
     lateinit var viewModel: SignInViewModel
     private var passwordShowHide = true
     private var passwordValue = ""
+    private var progressDialog: ProgressDialog? = null
 //    private val sharedPreference = SharedPreference(applicationContext)
+
+    var signInModel: SignInModel? = null
 
     @Inject
     lateinit var sharedPreference: SharedPreference
 
     var currentLanguage = "en"
-    var currentLang: kotlin.String? = null
+    var currentLang: String? = null
     var myLocale: Locale? = null
 
     @SuppressLint("ClickableViewAccessibility", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Utils.setAppTheme(sharedPreference.getBool(Constants.DARk_MODE))
         setContentView(R.layout.activity_sign_in)
 
         emailET = findViewById(R.id.email)
@@ -64,6 +74,11 @@ class SignInActivity : AppCompatActivity() {
         passwordToggle = findViewById(R.id.passwordHideShow)
         americaFlagButton = findViewById(R.id.flagAmerica)
         spainFlagButton = findViewById(R.id.flagSpain)
+
+        if (AppCompatDelegate.getDefaultNightMode()== AppCompatDelegate.MODE_NIGHT_NO){
+            sharedPreference.setBool(Constants.DARk_MODE,false)
+        }else
+            sharedPreference.setBool(Constants.DARk_MODE,true)
 
         setObserver()
         selectLanguages()
@@ -76,10 +91,12 @@ class SignInActivity : AppCompatActivity() {
 
     private fun selectLanguages() {
         americaFlagButton.setOnClickListener {
-            setLocale("en")
+            sharedPreference.setStr(Constants.LANGUAGE, "en")
+            setLocale()
         }
         spainFlagButton.setOnClickListener {
-            setLocale("es")
+            sharedPreference.setStr(Constants.LANGUAGE, "es")
+            setLocale()
         }
     }
 
@@ -148,7 +165,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     fun signInFirebase(view: View) {
-        val signInModel = SignInModel(emailET.text.toString().trim(), passwordValue.trim())
+        signInModel = SignInModel(emailET.text.toString().trim(), passwordValue.trim())
 
         if (emailET.text.toString().trim().isEmpty()) {
             Toast.makeText(
@@ -158,7 +175,7 @@ class SignInActivity : AppCompatActivity() {
             return
         }
 
-        if (!signInModel.isEmailValid()) {
+        if (!signInModel?.isEmailValid()!!) {
             Toast.makeText(
                 baseContext, resources.getString(R.string.invalid_email_alert),
                 Toast.LENGTH_LONG
@@ -166,7 +183,7 @@ class SignInActivity : AppCompatActivity() {
             return
         }
 
-        if (!signInModel.isPasswordValid()) {
+        if (!signInModel!!.isPasswordValid()) {
             Toast.makeText(
                 baseContext, resources.getString(R.string.empty_password_alert),
                 Toast.LENGTH_LONG
@@ -174,54 +191,78 @@ class SignInActivity : AppCompatActivity() {
             return
         }
 
-        val progressDialog = ProgressDialog.show(
+
+        progressDialog = ProgressDialog.show(
             this@SignInActivity, "",
             resources.getString(R.string.please_wait), true
         )
-
         auth.createUserWithEmailAndPassword(
-            signInModel.getStrEmailAddress()!!,
-            signInModel.getStrPassword()!!)
+            signInModel?.getStrEmailAddress()!!,
+            signInModel?.getStrPassword()!!
+        )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.e("PK===>", "createUserWithEmail:success")
-                    Log.e("PK===>", "${task.result}")
-                    Log.d("PK===>", "${task.result.user?.uid}")
-                    Log.e("PK===>", "${task.result.credential}")
-//                    val user = auth.currentUser
-                    progressDialog.dismiss()
+                    Log.e("PK===>", "aaaaaaa${task.result}")
+                    Log.d("PK===>", "aaaaaa${task.result.user?.uid}")
+                    Log.e("PK===>", "aaaaaa${task.result.credential}")
+
                     saveUserData()
                 } else {
-                    progressDialog.dismiss()
+                    signIn()
+                    /*  progressDialog?.dismiss()
                     if (task.exception?.message != null && task.exception?.message.toString()
                             .contains(
                                 "The email address is already in use by another account"
                             )
                     ) {
+                        Log.e("PK===>", "createUserWithEmail:failure", task.exception)
+
                         saveUserData()
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.e("PK===>", "createUserWithEmail:failure", task.exception)
+                        Log.e("PK1===>", "createUserWithEmail:failure", task.exception)
                         Toast.makeText(
                             baseContext, "Authentication failed.",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
 
+                }*/
+                }
+            }
+    }
+
+    private fun signIn() {
+        auth.signInWithEmailAndPassword(
+            signInModel?.getStrEmailAddress()!!,
+            signInModel?.getStrPassword()!!
+        )
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    saveUserData()
+                } else {
+                    progressDialog?.dismiss()
+                    Toast.makeText(
+                        applicationContext,
+                        "Login failed! Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
     }
 
     private fun saveUserData() {
+        progressDialog?.dismiss()
+        val user = auth.currentUser
+        sharedPreference.setStr(Constants.UID, user?.uid.toString())
         sharedPreference.setStr(sharedPreference.USER_EMAIL, emailET.text.toString().trim())
         sharedPreference.setStr(sharedPreference.USER_PASSWORD, passwordValue.trim())
         sharedPreference.setBool(sharedPreference.USER_LOGGED_IN, true)
-
-        runOnUiThread {
-            authWithServer()
-        }
-
+        val i = Intent(this@SignInActivity, InvoiceListActivity::class.java)
+        startActivity(i)
+        finishAffinity()
         Log.e("save--->", "ghj")
 
     }
@@ -260,23 +301,23 @@ class SignInActivity : AppCompatActivity() {
         viewModel.apiLogin(headers, LoginData("prueba", "MOBILE"))
     }
 
-    private fun setLocale(localeName: String) {
+    private fun setLocale() {
+        var localLan = sharedPreference.getStr(Constants.LANGUAGE)
 //        if (localeName != currentLanguage) {
-        currentLanguage = localeName
-        myLocale = Locale(localeName)
+        localLan = if (localLan.equals("DNF")) {
+            currentLanguage
+        } else sharedPreference.getStr(Constants.LANGUAGE)
+
+        myLocale = Locale(localLan)
+
         val res: Resources = resources
         val dm: DisplayMetrics = res.displayMetrics
         val conf: Configuration = res.configuration
         conf.locale = myLocale
         res.updateConfiguration(conf, dm)
         val refresh = Intent(this, SignInActivity::class.java)
-        refresh.putExtra(currentLang, localeName)
+        refresh.putExtra(currentLang, currentLanguage)
         startActivity(refresh)
-
-        //        } else {
-//            Toast.makeText(this@SignInActivity, "Language already selected!", Toast.LENGTH_SHORT)
-//                .show()
-//        }
     }
 
 }

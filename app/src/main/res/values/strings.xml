@@ -10,5 +10,12 @@
     <string name="empty_password_alert">Please enter password</string>
     <string name="empty_email_alert">Please enter email</string>
     <string name="invalid_email_alert">Please enter valid email</string>
+
+
     <string name="search">Search</string>
+    <string name="no_data_found">No Data Found</string>
+    <string name="invoices">Invoices</string>
+    <string name="list">List</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="logout">Logout</string>
 </resources>

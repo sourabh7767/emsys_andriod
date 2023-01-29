@@ -10,4 +10,11 @@
     <string name="empty_password_alert">Por favor, ingrese contraseña</string>
     <string name="empty_email_alert">Por favor ingrese el correo electrónico</string>
     <string name="invalid_email_alert">Por favor introduzca un correo electrónico válido</string>
+
+    <string name="search">Buscar</string>
+    <string name="no_data_found">No se encontraron datos</string>
+    <string name="invoices">Facturas</string>
+    <string name="list">Lista</string>
+    <string name="dark_mode">Modo oscuro</string>
+    <string name="logout">Cerrar sesión</string>
 </resources>

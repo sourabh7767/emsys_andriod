@@ -51,4 +51,9 @@ class SharedPreference @Inject constructor(@ApplicationContext private var conte
         val prefs = context!!.getSharedPreferences(PREFS_NAME, 0)
         return prefs.getBoolean(key, false)
     }
+
+    fun clear(){
+        val prefs = context!!.getSharedPreferences(PREFS_NAME, 0)
+        prefs.edit().clear().apply()
+    }
 }

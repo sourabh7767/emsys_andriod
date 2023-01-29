@@ -10,4 +10,6 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class AppController : Application() {
 
+
+
 }

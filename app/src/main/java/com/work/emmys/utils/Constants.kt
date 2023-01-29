@@ -5,4 +5,10 @@ package com.work.emmys.utils
  */
 object Constants {
     const val AUTH_TOKEN="auth"
+    const val UID="uid"
+    const val APP_ID="app_id"
+    const val APP_KEY="app_key"
+    const val DARk_MODE="dark"
+    const val LANGUAGE="language"
+    const val USERNAME="user"
 }

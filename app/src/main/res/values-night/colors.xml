@@ -8,14 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primer_color">#237EFF</color>
     <color name="second_color">#2F80ED</color>
     <color name="color_green">#8BC34A</color>
     <color name="color_light_gray">#F3A5A6A4</color>
 
-    <color name="colorEditBg">#FFFFFFFF</color>
-    <color name="colorIcons">#000000</color>
-    <color name="colorBg">#ebebeb</color>
-    <color name="textColor">#000000</color>
+    <color name="colorBg">#171e2d</color>
+    <color name="primer_color">#171e2d</color>
+    <color name="colorEditBg">#333946</color>
+    <color name="colorIcons">#FFFFFF</color>
+    <color name="textColor">#FFFFFF</color>
 
 </resources>

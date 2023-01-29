@@ -6,13 +6,18 @@ import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.work.emmys.R
+import com.work.emmys.utils.Constants
 import com.work.emmys.utils.SharedPreference
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class SplashActivity:AppCompatActivity() {
     private var isLoggedIn = false;
+
+    @Inject
+    lateinit var sharedPreference: SharedPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +43,14 @@ class SplashActivity:AppCompatActivity() {
     }
 
     private fun getUserData() {
-        val sharedPreference = SharedPreference(applicationContext)
+//        val sharedPreference = SharedPreference(applicationContext)
+
+        var localLan = sharedPreference.getStr(Constants.LANGUAGE)
+
+         if (localLan.equals("DNF")) {
+             sharedPreference.setStr(Constants.LANGUAGE, "en")
+         }
+
         isLoggedIn = sharedPreference.getBool(sharedPreference.USER_LOGGED_IN)
         Log.e("splash--->", "$isLoggedIn")
     }

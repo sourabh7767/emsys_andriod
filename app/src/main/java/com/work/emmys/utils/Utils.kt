@@ -1,7 +1,12 @@
 package com.work.emmys.utils
 
+import android.app.Activity
 import android.graphics.Color
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatDelegate
 import java.util.*
+
 
 /**
  * Created by PaL on 23,January,2023
@@ -25,5 +30,26 @@ object Utils {
         val green: Int = (baseGreen + mRandom.nextInt(256)) / 2
         val blue: Int = (baseBlue + mRandom.nextInt(256)) / 2
         return Color.rgb(red, green, blue)
+    }
+
+    fun hideKeyboard(activity: Activity) {
+        val imm: InputMethodManager =
+            activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view: View? = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+
+
+    }
+
+    fun setAppTheme(isDark:Boolean){
+        if (isDark)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 }
