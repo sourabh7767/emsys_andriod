@@ -18,12 +18,14 @@ object AdapterBinding {
     }
 
     @SuppressLint("SetTextI18n")
+    @JvmStatic
     @BindingAdapter("setSenderAddress")
     fun setSenderAddress(textView: TextView,invoice: InvoiceResponse.Response?){
         textView.text= "${invoice?.sender?.address?.apartment}\n${invoice?.sender?.address?.address1}\n${invoice?.sender?.address?.city},${invoice?.sender?.address?.state},${invoice?.sender?.address?.zipcode}\n${invoice?.sender?.phone1}"
     }
 
     @SuppressLint("SetTextI18n")
+    @JvmStatic
     @BindingAdapter("setReceiverAddress")
     fun setReceiverAddress(textView: TextView,invoice: InvoiceResponse.Response?){
         textView.text= "${invoice?.receiver?.address?.apartment}\n${invoice?.receiver?.address?.address1}\n${invoice?.receiver?.address?.city},${invoice?.receiver?.address?.state}\n${invoice?.receiver?.phone1}"
