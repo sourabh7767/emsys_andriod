@@ -204,9 +204,6 @@ class SignInActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.e("PK===>", "createUserWithEmail:success")
-                    Log.e("PK===>", "aaaaaaa${task.result}")
-                    Log.d("PK===>", "aaaaaa${task.result.user?.uid}")
-                    Log.e("PK===>", "aaaaaa${task.result.credential}")
 
                     saveUserData()
                 } else {

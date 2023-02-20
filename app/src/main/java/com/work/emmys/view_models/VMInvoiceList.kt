@@ -47,7 +47,7 @@ class VMInvoiceList @Inject constructor(@ApplicationContext private val context:
                                 response.errorBody().toString() ?: "Something went wrong")
                 }
             } catch (ex: Exception) {
-                Log.i("errorr", ex.localizedMessage.toString())
+                Log.i("errorr", ex.localizedMessage?.toString() ?: "")
                 when (ex) {
                     is IOException -> invoiceResponse.value = Resource.Error("Network Failure")
                     else -> invoiceResponse.value = Resource.Error("Conversion Error")

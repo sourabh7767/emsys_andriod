@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatDelegate
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -43,7 +44,6 @@ object Utils {
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
 
-
     }
 
     fun setAppTheme(isDark:Boolean){
@@ -51,5 +51,14 @@ object Utils {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
+
+    fun convertDate(){
+        var date = "2014-12-20T00:00:00Z"
+        var spf = SimpleDateFormat("y-M-d'T'H:m:s.SSSZ")
+        val newDate: Date = spf.parse(date)
+        spf = SimpleDateFormat("dd MMM yyyy")
+        date = spf.format(newDate)
+        println(date)
     }
 }

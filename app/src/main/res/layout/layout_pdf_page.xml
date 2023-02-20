@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.work.emmys.data.models.InvoiceResponse.Response" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/tvInvoiceNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="No 158522"
+            android:textColor="@color/textColor"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="Emsys"
+            android:textColor="@color/textColor"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="5dp">
+
+            <TextView
+                android:id="@+id/tvDateTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toStartOf="@+id/tvContainerTxt"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_light_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDateTxt" />
+
+            <TextView
+                android:id="@+id/tvContainerTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Container"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toStartOf="@+id/tvDriverTxt"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvDateTxt"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvDriverTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="Driver"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvContainerTxt"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="11-04-2023"
+                android:textColor="@color/textColor"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/tvContainerTxt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDateTxt" />
+
+            <TextView
+                android:id="@+id/tvContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="63-14"
+                android:textColor="@color/textColor"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/tvDriverTxt"
+                app:layout_constraintStart_toEndOf="@+id/tvDateTxt"
+                app:layout_constraintTop_toBottomOf="@+id/tvDateTxt"
+                app:setAmount="@{Double.valueOf(data.payment).toString()}" />
+
+            <TextView
+                android:id="@+id/tvDriver"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:text=""
+                android:textColor="@color/textColor"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvContainerTxt"
+                app:layout_constraintTop_toBottomOf="@+id/tvDateTxt"
+                app:setAmount="@{Double.valueOf(data.balance).toString()}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="Sender"
+            android:textColor="@color/textColor"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="Maximo Mercedes"
+            android:textColor="@color/textColor"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSenderAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="41W 86 ST # \nMANHATTEN, NY 2004 \n652-427-0257"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="Receiver"
+            android:textColor="@color/textColor"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvReceiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="ROBERTO BAEZ"
+            android:textColor="@color/textColor"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvReceiverAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="13th Street. 47 W 13th S \nNew York, NY 10011 \n652-427-0257"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="5dp">
+
+            <TextView
+                android:id="@+id/tvDescriptionTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/description"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toStartOf="@+id/tvPriceTxt"
+                app:layout_constraintHorizontal_weight="5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_light_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDescriptionTxt" />
+
+            <TextView
+                android:id="@+id/tvPriceTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Price"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toStartOf="@+id/tvTotalTxt"
+                app:layout_constraintHorizontal_weight="2.5"
+                app:layout_constraintStart_toEndOf="@+id/tvDescriptionTxt"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTotalTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="Total"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="2.5"
+                app:layout_constraintStart_toEndOf="@+id/tvPriceTxt"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInvoiceList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTotalTxt"
+                tools:listitem="@layout/item_invoice_detail" />
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="CARA CON COMIDA Y ROPA USADA"
+                android:textColor="@color/textColor"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@+id/tvPriceTxt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDescriptionTxt" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:gravity="center"
+                android:text="80.00"
+                android:textColor="@color/textColor"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@+id/tvTotalTxt"
+                app:layout_constraintStart_toEndOf="@+id/tvDescriptionTxt"
+                app:layout_constraintTop_toBottomOf="@+id/tvDescriptionTxt" />
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:gravity="end"
+                android:text="80.00"
+                android:textColor="@color/textColor"
+
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvPriceTxt"
+                app:layout_constraintTop_toBottomOf="@+id/tvDescriptionTxt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="5dp">
+
+            <View
+                android:id="@+id/vi"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/color_light_gray"
+                app:layout_constraintEnd_toEndOf="@+id/tvCost"
+                app:layout_constraintStart_toStartOf="@+id/tvCostTxt"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/vi2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/color_light_gray"
+                app:layout_constraintEnd_toEndOf="@+id/tvCost"
+                app:layout_constraintStart_toStartOf="@+id/tvCostTxt"
+                app:layout_constraintTop_toBottomOf="@+id/vi" />
+
+            <TextView
+                android:id="@+id/tvEmptyTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toStartOf="@+id/tvCostTxt"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCostTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Cost"
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/tvCost"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvEmptyTxt"
+                app:layout_constraintTop_toBottomOf="@+id/vi2" />
+
+            <TextView
+                android:id="@+id/tvCost"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="end"
+                android:text="80.00"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvCostTxt"
+                app:layout_constraintTop_toBottomOf="@+id/vi2" />
+
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toStartOf="@+id/tvCostTxt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvEmptyTxt" />
+
+            <TextView
+                android:id="@+id/tvPaymentTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Payment"
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/tvCost"
+                app:layout_constraintStart_toEndOf="@+id/tvEmptyTxt"
+                app:layout_constraintTop_toBottomOf="@+id/tvEmptyTxt"
+                app:setAmount="@{Double.valueOf(data.payment).toString()}" />
+
+            <TextView
+                android:id="@+id/tvPayment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="end"
+                android:text="80.00"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvCostTxt"
+                app:layout_constraintTop_toBottomOf="@+id/tvEmptyTxt"
+                app:setAmount="@{Double.valueOf(data.balance).toString()}" />
+
+            <TextView
+                android:id="@+id/tvBalanceTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Balance"
+                android:textAlignment="viewStart"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/tvCost"
+                app:layout_constraintStart_toEndOf="@+id/tvEmptyTxt"
+                app:layout_constraintTop_toBottomOf="@+id/tvPaymentTxt"
+                app:setAmount="@{Double.valueOf(data.payment).toString()}" />
+
+            <TextView
+                android:id="@+id/tvBalance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="$0.00"
+                android:textColor="@color/textColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvCostTxt"
+                app:layout_constraintTop_toBottomOf="@+id/tvPaymentTxt"
+                app:setAmount="@{Double.valueOf(data.balance).toString()}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="Total of package(s):1"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/ivSign"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/baseline_print_24"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="@dimen/_50sdp"
+            android:background="@color/color_light_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:text="Client Signature"
+            android:textColor="@color/textColor"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</layout>

@@ -9,8 +9,8 @@ data class InvoiceResponse(
     val response: List<Response>,
     val resultsPerPage: Int,
     val status: Int,
-    val subtotal: Int,
-    val total: Int
+    val subtotal: Double,
+    val total: Double
 ) {
     data class Response(
         val branch: Branch,
@@ -25,7 +25,8 @@ data class InvoiceResponse(
         val oldID: Int,
         val paidRegion: String,
         val paidStatus: String,
-        val payment: Int,
+        val balance: Double,
+        val payment: Double,
         val `receiver`: Receiver,
         val sender: Sender,
         val user: User
@@ -49,9 +50,9 @@ data class InvoiceResponse(
             val id: String,
             val labels: Int,
             val name: String,
-            val price: Int,
+            val price: Double,
             val quantity: Int,
-            val total: Int,
+            val total: Double,
             val updatedAt: String
         ) {
             data class Barcode(
@@ -92,6 +93,7 @@ data class InvoiceResponse(
             data class Address(
                 val address1: String,
                 val city: String,
+                val apartment:String,
                 val country: String,
                 val state: String
             )
@@ -100,6 +102,7 @@ data class InvoiceResponse(
         data class Sender(
             val address: Address,
             val customerType: Int,
+            val apartment:String,
             val id: String,
             val name: String,
             val phone1: String,

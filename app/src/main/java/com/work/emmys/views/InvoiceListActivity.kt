@@ -4,14 +4,11 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -24,10 +21,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.work.emmys.R
 import com.work.emmys.adapters.AdapterInvoiceList
+import com.work.emmys.data.models.InvoiceResponse
 import com.work.emmys.data.remote.Resource
 import com.work.emmys.databinding.ActivityInvoiceListBinding
+import com.work.emmys.listeners.ItemClickListener
 import com.work.emmys.models.LoginData
 import com.work.emmys.utils.Constants
 import com.work.emmys.utils.SharedPreference
@@ -40,14 +40,13 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class InvoiceListActivity : AppCompatActivity() {
+class InvoiceListActivity : AppCompatActivity(), ItemClickListener {
     private lateinit var binding: ActivityInvoiceListBinding
     private lateinit var adapterInvoiceList: AdapterInvoiceList
     private lateinit var progressDialog: ProgressDialog
 
-    var currentLanguage = "en"
-    var currentLang: String? = null
-    var myLocale: Locale? = null
+    private var currentLanguage = "en"
+    private var myLocale: Locale? = null
 
     @Inject
     lateinit var sharedPreference: SharedPreference
@@ -65,7 +64,7 @@ class InvoiceListActivity : AppCompatActivity() {
         if (savedInstanceState != null)
             currentLanguage = savedInstanceState.getString(Constants.LANGUAGE) ?: "en"
 
-        Log.e("LangCode", "$currentLanguage")
+        Log.e("LangCode", currentLanguage)
 
         Utils.setAppTheme(sharedPreference.getBool(Constants.DARk_MODE))
         binding = DataBindingUtil.setContentView(this, R.layout.activity_invoice_list)
@@ -78,7 +77,7 @@ class InvoiceListActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        adapterInvoiceList = AdapterInvoiceList(emptyList())
+        adapterInvoiceList = AdapterInvoiceList(emptyList(), this)
         binding.rvInvoiceList.adapter = adapterInvoiceList
         binding.rvInvoiceList.requestFocus()
 
@@ -89,15 +88,17 @@ class InvoiceListActivity : AppCompatActivity() {
     }
 
     private fun getApiData() {
-        Log.d("Firestore", "getting documents.")
-
         val currentUser = FirebaseAuth.getInstance().currentUser?.uid
         val db = Firebase.firestore
-        val docRef = db.collection("users").get().addOnSuccessListener {
+        db.collection("users").get().addOnSuccessListener {
             for (document in it) {
                 if (currentUser?.equals(document.id) == true) {
                     sharedPreference.setStr(Constants.APP_ID, document.data["appId"]?.toString())
                     sharedPreference.setStr(Constants.APP_KEY, document.data["apiKey"]?.toString())
+                    sharedPreference.setStr(
+                        Constants.USERNAME,
+                        document.data["userName"]?.toString()
+                    )
                     authWithServer()
                     break
                 } else {
@@ -107,7 +108,7 @@ class InvoiceListActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                 }
-                Log.d("Firestore docc", "${document.id} => ${document.data}")
+//                Log.d("Firestore docc", "${document.id} => ${document.data}")
             }
         }.addOnFailureListener {
             Log.d("Firestore", "Error getting documents.", it)
@@ -223,14 +224,17 @@ class InvoiceListActivity : AppCompatActivity() {
     }
 
     private fun authWithServer() {
-        val headers = java.util.HashMap<String, String>()
+        val headers = HashMap<String, String>()
         headers["App-Id"] = "${sharedPreference.getStr(Constants.APP_ID)}"
         headers["Api-Key"] = "${sharedPreference.getStr(Constants.APP_KEY)}"
         /*  headers["App-Id"] = "91a859ed-9d1d-4202-9bcb-cdcf2ffddb43"
           headers["Api-Key"] = "5e4d8606d8c1f65f2ce12459"*/
         headers["Content-Type"] = "application/json"
 
-        signInViewModel.apiLogin(headers, LoginData("prueba", "MOBILE"))
+        signInViewModel.apiLogin(
+            headers,
+            LoginData(sharedPreference.getStr(Constants.USERNAME).toString(), "MOBILE")
+        )
     }
 
     private fun setLocale() {
@@ -244,8 +248,9 @@ class InvoiceListActivity : AppCompatActivity() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            myLocale = Locale(localLan)
+            myLocale = Locale(localLan!!)
             configuration.setLocale(myLocale)
+            @Suppress("DEPRECATION")
             this.resources?.updateConfiguration(configuration, resources.displayMetrics)
         }, 300)
     }
@@ -255,7 +260,7 @@ class InvoiceListActivity : AppCompatActivity() {
             when (it) {
                 is Resource.Success -> {
                     it.data?.let { newsResponse ->
-                        val token = newsResponse.response[0].token.access ?: ""
+                        val token = newsResponse.response[0].token.access
                         sharedPreference.setStr(Constants.AUTH_TOKEN, token)
                         apiGetInvoices()
                     }
@@ -326,6 +331,8 @@ class InvoiceListActivity : AppCompatActivity() {
             binding.etSearch.text.toString()
 
         viewModel.apiGetInvoice(headers, params)
+
+//        Utils.convertDate()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -338,16 +345,28 @@ class InvoiceListActivity : AppCompatActivity() {
         val resources = newBase?.resources
         val configuration = Configuration(resources?.configuration)
         configuration.uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
-        val context = newBase?.createConfigurationContext(configuration)
+//        val context = newBase?.createConfigurationContext(configuration)
 
         // Set locale with configuration saved
         val sharedPreferences = SharedPreference(newBase)
         val langue = sharedPreferences.getStr(Constants.LANGUAGE)
-        val locale = Locale(langue)
+        val locale = Locale(langue.toString())
         Locale.setDefault(locale)
         configuration.setLocale(locale)
+        @Suppress("DEPRECATION")
         resources?.updateConfiguration(configuration, resources.displayMetrics)
         super.attachBaseContext(newBase)
+    }
+
+    /*Invoice Click Listener*/
+    override fun onItemClick(item: Any?) {
+        val invoice = item as InvoiceResponse.Response
+        startActivity(
+            Intent(this, InvoiceDetailActivity::class.java).putExtra(
+                Constants.DATA,
+                Gson().toJson(invoice)
+            )
+        )
     }
 
 }
